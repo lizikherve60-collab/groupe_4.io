@@ -1,11 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>generator</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+        .conteneur{
+            background-color: rgba(0, 0, 0, 0.4);
+            max-width: 700px;
+            text-align: center;
+            margin: auto;
+            margin-top: 150px;
+            padding: 60px;
+            border-radius: 16px;
+
+        }
+        h1{
+            margin-top: -30px;
+        }
+        button{
+            font-size: 1.1rem;
+            border-radius: 10px;
+            padding: 10px 20px;
+            border: none;
+            margin: 10px;
+      
+        }
+        .generateur{
+            background-color: rgb(42, 80, 42);
+            color: white;
+            
+        }
+        .partage{
+            background-color: rgb(38, 155, 153);
+            color: white;
+        }
+        #Citation{
+            font-size: 1.5em;
+        }
+        .author{
+            opacity: .7;
+            font-size: 1.1rem;
+        }
+        button:hover{
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        .ecoute{
+            color: white;
+            background-color: rgb(31, 56, 103);
+            padding: 10px 25px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bonjour</h1>
+    <div class="conteneur">
+        <h1>Citation du jour!</h1>
+        <p id="Citation">Cliquez sur le bouton "Nouvelle Citation" pour voir une citation.</p>
+        <p id="auteur" class="author"></p>
+        <button class="generateur" onclick="Generateur()">Nouvelle Citation</button><br>
+        <button class="ecoute" id="" onclick="Ecouter()">Ecouter</button>
+        <button class="partage" onclick="Partager()">Partagez sur WhatsApp</button>
+    </div>
+    <script>
+        let Citations = [
+  { text: "Le succès est la somme de petits efforts répétés jour après jour.", author: "Robert Collier" },
+  { text: "La meilleure façon de commencer est d’arrêter de parler et commencer à agir.", author: "Walt Disney" },
+  { text: "Le bonheur n’est pas quelque chose de prêt à l’emploi. Il vient de tes propres actions.", author: "Dalaï Lama" },
+  { text: "La simplicité est la sophistication suprême.", author: "Léonard de Vinci" },
+  { text: "Celui qui déplace une montagne commence par déplacer de petites pierres.", author: "Confucius" },
+  { text: "La seule limite à notre épanouissement de demain sera nos doutes d’aujourd’hui.", author: "Franklin D. Roosevelt" },
+  { text: "Il n’y a qu’une façon d’échouer, c’est d’abandonner avant d’avoir réussi.", author: "Georges Clemenceau" },
+  { text: "La discipline est le pont entre les objectifs et la réussite.", author: "Jim Rohn" },
+  { text: "La vie est un défi à relever, un bonheur à mériter, une aventure à tenter.", author: "Mère Teresa" },
+  { text: "Ne compte pas les jours, fais que les jours comptent.", author: "Muhammad Ali" },
+  { text: "Tout ce que l’esprit peut concevoir et croire, il peut l’accomplir.", author: "Napoleon Hill" },
+  { text: "L’échec est simplement l’opportunité de recommencer, cette fois de manière plus intelligente.", author: "Henry Ford" },
+  { text: "Le courage n’est pas l’absence de peur, mais la capacité de la vaincre.", author: "Nelson Mandela" },
+  { text: "Agis comme si ce que tu fais fait une différence. Ça en fait une.", author: "William James" },
+  { text: "La réussite appartient à ceux qui osent.", author: "Charles de Gaulle" },
+  { text: "On ne découvre pas de terres nouvelles sans consentir à perdre de vue le rivage.", author: "André Gide" },
+  { text: "La connaissance s’acquiert par l’expérience, tout le reste n’est que de l’information.", author: "Albert Einstein" },
+  { text: "Fais de ta vie un rêve, et d’un rêve une réalité.", author: "Antoine de Saint-Exupéry" },
+  { text: "Ce n’est pas parce que les choses sont difficiles que nous n’osons pas, c’est parce que nous n’osons pas qu’elles sont difficiles.", author: "Sénèque" },
+  { text: "La persévérance est la clé du succès.", author: "Thomas Edison" }
+];
+var CitationCourante = ""
+    function Generateur(){
+        var IndexCitation = Math.floor(Math.random() * Citations.length);
+        CitationCourante = Citations[IndexCitation];
+        document.getElementById("Citation").innerText = CitationCourante.text;
+        document.getElementById('auteur').innerText = CitationCourante.author;
+    }
+
+    function Partager(){
+        if(!CitationCourante){
+            alert("Generez d'abord une citation avant de partager");
+            return ;
+        }
+        const url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(CitationCourante);
+        window.open(url, "_blank");
+    }
+    function Ecouter(){
+        if(!CitationCourante){
+            alert("Generez d'abord une citation avant d'Ecouter.");
+            return;
+        }
+        const parle = new SpeechSynthesisUtterance(CitationCourante.text + " Ecrit par " + CitationCourante.author);
+        parle.lang = "fr-FR";
+        window.speechSynthesis.speak(parle);
+    }
+    </script>
 </body>
 </html>
